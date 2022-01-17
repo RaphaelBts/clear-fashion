@@ -125,6 +125,9 @@ console.log(average_basket)
 // 2. Log the variable
 // 3. Log the number of products by brands
 
+var sorted_date = marketplace.sort(function(b,a){return new Date(a.date).getTime- new Date(b.date).getTime()})
+console.log(sorted_date);
+//https://docs.jsonata.org/sorting-grouping
 
 // 🎯 TODO: Sort by price for each brand
 // 1. For each brand, sort the products by price, from highest to lowest
