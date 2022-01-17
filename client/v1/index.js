@@ -32,7 +32,8 @@ console.log(MY_FAVORITE_BRANDS[0]);
 // I can find on these e-shops
 // 2. Log the variable
 
-
+var cheapest_t_shirt=MY_FAVORITE_BRANDS[1].url
+console.log(cheapest_t_shirt)
 
 
 
@@ -48,36 +49,56 @@ console.log(MY_FAVORITE_BRANDS[0]);
 // 🎯 TODO: Number of products
 // 1. Create a variable and assign it the number of products
 // 2. Log the variable
-
+var num_prod=marketplace.length
+console.log(num_prod)
 
 // 🎯 TODO: Brands name
 // 1. Create a variable and assign it the list of brands name only
 // 2. Log the variable
 // 3. Log how many brands we have
 
+//console.log(marketplace)
+var products_brands_name=[]
+for (const i of Array(num_prod).keys()) {
+  products_brands_name[i]=marketplace[i].brand
+}
+products_brands_name=[... new Set(products_brands_name)]
+console.log(products_brands_name);
+console.log(products_brands_name.length)
 
 // 🎯 TODO: Sort by price
 // 1. Create a function to sort the marketplace products by price
 // 2. Create a variable and assign it the list of products by price from lowest to highest
 // 3. Log the variable
-
+var sorted_price = marketplace.sort(function(a, b) {return a.price - b.price});
+console.log(sorted_price);
 
 // 🎯 TODO: Sort by date
 // 1. Create a function to sort the marketplace objects by products date
 // 2. Create a variable and assign it the list of products by date from recent to old
 // 3. Log the variable
 
+var sorted_date = marketplace.sort(function(b,a){return new Date(a.date).getTime()- new Date(b.date).getTime()})
+console.log(sorted_date);
 
 // 🎯 TODO: Filter a specific price range
 // 1. Filter the list of products between 50€ and 100€
 // 2. Log the list
-
+var filter_price = marketplace.filter(function(x){ return x.price >= 50 && x.price <= 100});
+console.log(filter_price);
+console.log(filter_price.length);
 
 // 🎯 TODO: Average Basket
 // 1. Determine the average basket of the marketplace
 // 2. Log the average
 
-
+var average_basket=0
+for (const i of Array(num_prod).keys()) {
+ average_basket+=marketplace[i].price
+}
+console.log(num_prod)
+average_basket=average_basket/num_prod
+console.log(average_basket)
 
 
 
