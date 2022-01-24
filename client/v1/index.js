@@ -84,8 +84,8 @@ console.log(sorted_date);
 // 1. Filter the list of products between 50€ and 100€
 // 2. Log the list
 var filter_price = marketplace.filter(function(x){ return x.price >= 50 && x.price <= 100});
-console.log(filter_price);
-console.log(filter_price.length);
+console.log(`The average basket is ${filter_price}`);
+
 
 // 🎯 TODO: Average Basket
 // 1. Determine the average basket of the marketplace
@@ -97,7 +97,7 @@ for (const i of Array(num_prod).keys()) {
 }
 console.log(num_prod)
 average_basket=average_basket/num_prod
-console.log(average_basket)
+console.log(`The average basket is ${average_basket}`)
 
 
 
@@ -136,7 +136,6 @@ for (const brand_name of products_brands_name) {
 
 for (const i of Array(num_prod).keys()) {
   const_brands[`${marketplace[i].brand}`].push(new_marketplace[i]);
- // delete const_brands[`${marketplace[i].brand}`];
 
 }
 
@@ -149,7 +148,7 @@ var sorted_price={}
 for (const brand_name of products_brands_name)
 {
    sorted_price[`${brand_name}`] =[...const_brands[`${brand_name}`]].sort(function(b,a){return a.price-b.price;});
-   console.log( const_brands[`${brand_name}`].sort(function(b,a){return a.price-b.price}));
+   console.log(sorted_price);
 }
 console.log(sorted_price);
 
@@ -176,19 +175,37 @@ console.log(sorted_date);
 // 1. Compute the p90 price value of each brand
 // The p90 value (90th percentile) is the lower value expected to be exceeded in 90% of the products
 
+
+const asc = arr => arr.sort((a, b) => a - b);
+
+const quantile = (arr, q) => {  // stack overflow... 
+  const sorted = asc(arr);
+  const pos = (sorted.length - 1) * q;
+  const base = Math.floor(pos);
+  const rest = pos - base;
+  if (sorted[base + 1] !== undefined) {
+      return sorted[base] + rest * (sorted[base + 1] - sorted[base]);
+  } else {
+      return sorted[base];
+  }
+};
+
 var p90_value ={}
+var p90 = {}
 
 for (const brand_name of products_brands_name)
 {
 p90_value[`${brand_name}`] = [];
-for (const i of Array(const_brands[`${brand_name}`]).Keys())
-{
- p90_value[`${brand_name}`].push(const_brands[`${brand_name}`][i]['price'])
-}
+  for (const i of Array(const_brands[`${brand_name}`].length).keys())
+  {
+  p90_value[`${brand_name}`].push(const_brands[`${brand_name}`][i]['price'])
+  }
 
-const p90[`${brand_name}`]= p90_value[`${brand_name}`]=>quantile(p90_value[`${brand_name}`],0.90)
+  p90[`${brand_name}`]= quantile(p90_value[`${brand_name}`],0.10);
 }
 console.log(p90);
+
+
 
 /**
  * 🧥
@@ -261,21 +278,69 @@ const COTELE_PARIS = [
 // 🎯 TODO: New released products
 // // 1. Log if we have new products only (true or false)
 // // A new product is a product `released` less than 2 weeks.
+var new_products=true ; 
+var less_2weeks= 1000 * 60 * 60 * 24 * 14 ;
+for (const i of Array(COTELE_PARIS.length).keys())
+{
+  if ( new Date(COTELE_PARIS[i].released).getTime() < Date.now()-less_2weeks){ // I checked 2022-01-10 and 2022-01-20 and it worked
+    new_products=false ;
+  }
+}
+if (new_products==false)
+{
+console.log("Not only new products");
+}
+else 
+{
+  console.log(" There are only new products ");
+}
 
+//🎯 TODO: Reasonable price
+// 1. Log if coteleparis is a reasonable price shop (true or false)
+//  reasonable price if all the products are less than 100€
+var reasonable=true;
+const reasonable_price=100;
 
-// 🎯 TODO: Reasonable price
-// // 1. Log if coteleparis is a reasonable price shop (true or false)
-// // A reasonable price if all the products are less than 100€
-Reasonable 
+for (const i of Array(COTELE_PARIS.length).keys())
+{
+  if ( COTELE_PARIS[i].price > reasonable_price){
+    reasonable=false;
+    break ; 
+  }
+}if (reasonable==false )
+{
+  console.log(" Not a reasonable price shop !");
+}
+else
+{
+  console.log("Reasonable price shop");
+}
 
 // 🎯 TODO: Find a specific product
 // 1. Find the product with the uuid `b56c6d88-749a-5b4c-b571-e5b5c6483131`
 // 2. Log the product
+for (const i of Array(COTELE_PARIS.length).keys())
+{
+  if ( COTELE_PARIS[i].uuid === `b56c6d88-749a-5b4c-b571-e5b5c6483131` ){
+      var specific_product= COTELE_PARIS[i];
+      break ; 
+  }
+}
+console.log(specific_product);
 
 
 // 🎯 TODO: Delete a specific product
 // 1. Delete the product with the uuid `b56c6d88-749a-5b4c-b571-e5b5c6483131`
 // 2. Log the new list of product
+
+var new_COTELE_PARIS=[...COTELE_PARIS];
+for (const i of Array(COTELE_PARIS.length).keys())
+{
+  if ( new_COTELE_PARIS[i].uuid === `b56c6d88-749a-5b4c-b571-e5b5c6483131` ){
+      delete new_COTELE_PARIS[i]
+  }
+}
+console.log(new_COTELE_PARIS);
 
 // 🎯 TODO: Save the favorite product
 let blueJacket = {
@@ -292,7 +357,9 @@ jacket.favorite = true;
 
 // 1. Log `blueJacket` and `jacket` variables
 // 2. What do you notice?
-
+console.log(jacket);
+console.log(blueJacket);
+// A  key-value ref favorite=true was added to the jacket and ALSO updated the bluejacket.
 blueJacket = {
   'link': 'https://coteleparis.com/collections/tous-les-produits-cotele/products/la-veste-bleu-roi',
   'price': 110,
@@ -300,6 +367,10 @@ blueJacket = {
 };
 
 // 3. Update `jacket` property with `favorite` to true WITHOUT changing blueJacket properties
+let jacket2 = {...blueJacket};
+jacket2.favorite=true
+console.log(jacket2);
+console.log(blueJacket);
 
 
 /**
@@ -311,3 +382,6 @@ blueJacket = {
 // 🎯 TODO: Save in localStorage
 // 1. Save MY_FAVORITE_BRANDS in the localStorage
 // 2. log the localStorage
+
+let localStorage={...MY_FAVORITE_BRANDS};
+console.log(localStorage);
