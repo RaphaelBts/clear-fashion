@@ -84,7 +84,7 @@ console.log(sorted_date);
 // 1. Filter the list of products between 50€ and 100€
 // 2. Log the list
 var filter_price = marketplace.filter(function(x){ return x.price >= 50 && x.price <= 100});
-console.log(`The average basket is ${filter_price}`);
+console.log(filter_price);
 
 
 // 🎯 TODO: Average Basket
