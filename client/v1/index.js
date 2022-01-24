@@ -87,8 +87,8 @@ var filter_price = marketplace.filter(function(x){ return x.price >= 50 && x.pri
 console.log(filter_price);
 
 
-// 🎯 TODO: Average Basket
-// 1. Determine the average basket of the marketplace
+// 🎯 TODO: Average price
+// 1. Determine the average price of the marketplace
 // 2. Log the average
 
 var average_basket=0
