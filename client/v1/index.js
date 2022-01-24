@@ -18,7 +18,6 @@ console.table(MY_FAVORITE_BRANDS);
 console.log(MY_FAVORITE_BRANDS[0]);
 
 
-
 /**
  * 🌱
  * Let's go with a very very simple first todo
@@ -124,21 +123,45 @@ console.log(average_basket)
 //
 // 2. Log the variable
 // 3. Log the number of products by brands
+var const_brands ={}
 
-var sorted_date = marketplace.sort(function(b,a){return new Date(a.date).getTime- new Date(b.date).getTime()})
-console.log(sorted_date);
-//https://docs.jsonata.org/sorting-grouping
+const new_marketplace=JSON.parse(JSON.stringify(marketplace));
+for (const i of Array(num_prod).keys()){
+  delete new_marketplace[i].brand ;
+}
+
+for (const brand_name of products_brands_name) {
+   const_brands[`${brand_name}`]=[]; 
+  }
+
+for (const i of Array(num_prod).keys()) {
+  const_brands[`${marketplace[i].brand}`].push(new_marketplace[i]);
+ // delete const_brands[`${marketplace[i].brand}`];
+
+}
+
+console.log(const_brands);
 
 // 🎯 TODO: Sort by price for each brand
 // 1. For each brand, sort the products by price, from highest to lowest
 // 2. Log the sort
-
+var sorted_price={}
+for (const brand_name of products_brands_name)
+{
+   sorted_price[`${brand_name}`] =[...const_brands[`${brand_name}`]].sort(function(b,a){return a.price-b.price;});
+   console.log( const_brands[`${brand_name}`].sort(function(b,a){return a.price-b.price}));
+}
+console.log(sorted_price);
 
 // 🎯 TODO: Sort by date for each brand
 // 1. For each brand, sort the products by date, from old to recent
 // 2. Log the sort
-
-
+var sorted_date ={}
+for (const brand_name of products_brands_name)
+{
+ sorted_date[`${brand_name}`] =[...const_brands[`${brand_name}`]].sort(function(b,a){return new Date(a.date).getTime() - new Date(b.date).getTime()});
+}
+console.log(sorted_date);
 
 
 
@@ -152,7 +175,6 @@ console.log(sorted_date);
 // 🎯 TODO: Compute the p90 price value
 // 1. Compute the p90 price value of each brand
 // The p90 value (90th percentile) is the lower value expected to be exceeded in 90% of the products
-
 
 
 
@@ -267,9 +289,6 @@ blueJacket = {
 };
 
 // 3. Update `jacket` property with `favorite` to true WITHOUT changing blueJacket properties
-
-
-
 
 
 /**
