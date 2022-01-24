@@ -176,8 +176,19 @@ console.log(sorted_date);
 // 1. Compute the p90 price value of each brand
 // The p90 value (90th percentile) is the lower value expected to be exceeded in 90% of the products
 
+var p90_value ={}
 
+for (const brand_name of products_brands_name)
+{
+p90_value[`${brand_name}`] = [];
+for (const i of Array(const_brands[`${brand_name}`]).Keys())
+{
+ p90_value[`${brand_name}`].push(const_brands[`${brand_name}`][i]['price'])
+}
 
+const p90[`${brand_name}`]= p90_value[`${brand_name}`]=>quantile(p90_value[`${brand_name}`],0.90)
+}
+console.log(p90);
 
 /**
  * 🧥
@@ -255,7 +266,7 @@ const COTELE_PARIS = [
 // 🎯 TODO: Reasonable price
 // // 1. Log if coteleparis is a reasonable price shop (true or false)
 // // A reasonable price if all the products are less than 100€
-
+Reasonable 
 
 // 🎯 TODO: Find a specific product
 // 1. Find the product with the uuid `b56c6d88-749a-5b4c-b571-e5b5c6483131`
