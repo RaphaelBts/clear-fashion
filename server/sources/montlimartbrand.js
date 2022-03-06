@@ -16,14 +16,21 @@ const parse = data => {
         .text()
         .trim()
         .replace(/\s/g, ' ');
+
+      const link = $(element)
+      .find('h2.product-name')
+      .find('a')
+      .attr('href');
+
       const price = parseInt(
         $(element)
           .find('div.price-box')
           .find('span.price')
           .text()
-      );
+      
+      ); // Rajouter d'autres bails genre materiaux + images + date de scraping. 
 
-      return {name, price};
+      return {name, price, link};
     })
     .get();
 };
