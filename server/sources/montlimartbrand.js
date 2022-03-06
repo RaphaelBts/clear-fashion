@@ -6,6 +6,7 @@ const cheerio = require('cheerio');
  * @param  {String} data - html response
  * @return {Array} products
  */
+const brand = "montlimart"
 const parse = data => {
   const $ = cheerio.load(data);
 
@@ -29,8 +30,9 @@ const parse = data => {
           .text()
       
       ); // Rajouter d'autres bails genre materiaux + images + date de scraping. 
+       // return montlimart pour associer les items ? 
 
-      return {name, price, link};
+      return {name, price, link, brand};
     })
     .get();
 };

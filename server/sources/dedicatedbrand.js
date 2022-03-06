@@ -6,6 +6,7 @@ const cheerio = require('cheerio');
  * @param  {String} data - html response
  * @return {Array} products
  */
+const brand = "dedicated"
 const parse = data => {
   const $ = cheerio.load(data);
 
@@ -31,7 +32,7 @@ const parse = data => {
           .text()
       );
 
-      return {name, price, link};
+      return {name, price, link, image, brand};
     })
     .get();
 };
@@ -41,25 +42,14 @@ const parse = data => {
  * @param  {[type]}  url
  * @return {Array|null}
  */
-module.exports.scrape = async url => {
+ module.exports.scrape = async url => {
   try {
     const response = await fetch(url);
 
     if (response.ok) {
       const body = await response.text();
-      const result= parse(body)
-      const nbPages = Math.ceil(result[0]['nbProduct']/result[0]['Current']);
-      let finalresult = []
-      for (let i=1;i<nbPages;i++){
-        const url_next = 'https://www.dedicatedbrand.com/en/men/all-men?p' + i.toString();
-      try {
-        const response2 = await fetch(url_next);
-        if (response2.ok){
-          const 
-        }
-      }
-      }
 
+      return parse(body);
     }
 
     console.error(response);
@@ -70,3 +60,4 @@ module.exports.scrape = async url => {
     return null;
   }
 };
+

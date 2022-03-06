@@ -6,6 +6,7 @@ const cheerio = require('cheerio');
  * @param  {String} data - html response
  * @return {Array} products
  */
+const brand = 'addresseParis'
 const parse = data => {
   const $ = cheerio.load(data);
 
@@ -16,13 +17,16 @@ const parse = data => {
         .text()
         .trim()
         .replace(/\s/g, ' ');
+      const link = $(element)
+      .find('h5.product-name-container.versionpc .product-name')
+      .attr('href');
       const price = parseInt(
         $(element)
           .find('.price.product-price')
           .text()
       );
 
-      return {name, price};
+      return {name, price, link};
     })
     .get();
 };
