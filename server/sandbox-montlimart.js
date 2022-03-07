@@ -2,13 +2,14 @@
 const montlimart= require('./sources/montlimartbrand');
 
 
-async function sandbox (eshop = 'https://www.montlimart.com/toute-la-collection.html') {
+async function sandbox (eshop = 'https://www.montlimart.com/toute-la-collection.html?limit=all') {
   try {
     console.log(`🕵️‍♀️  browsing ${eshop} source`);
 
     const products = await montlimart.scrape(eshop);
 
     console.log(products);
+    console.log(products.length);
     console.log('done');
     process.exit(0);
   } catch (e) {
