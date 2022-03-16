@@ -27,9 +27,7 @@ const parse = data => {
         $(element)
           .find('div.price-box')
           .find('span.price')
-          .text()
-      
-      ); // Rajouter d'autres bails genre materiaux + images + date de scraping. 
+          .text()); // Rajouter d'autres bails genre materiaux + images + date de scraping. 
        // return montlimart pour associer les items ? 
 
       return {name, price, link, brand};

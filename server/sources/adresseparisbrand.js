@@ -22,7 +22,7 @@ const parse = data => {
       .attr('href');
       const price = parseInt(
         $(element)
-          .find('.price.product-price')
+          .find('.price.product-price')       
           .text()
       );
 

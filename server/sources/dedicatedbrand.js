@@ -1,38 +1,38 @@
 const fetch = require('node-fetch');
 const cheerio = require('cheerio');
+const {'v5': uuidv5} = require('uuid');
 
 /**
- * Parse webpage e-shop
+ * Parse webpage restaurant
  * @param  {String} data - html response
- * @return {Array} products
+ * @return {Object} restaurant
  */
-const brand = "dedicated"
+const brand = 'dedicated'
 const parse = data => {
   const $ = cheerio.load(data);
+  const released = new Date();
 
-  return $('.productList-container.productList')
+  return $('.productList-container .productList')
     .map((i, element) => {
-      const name = $(element)
-        .find('.productList-title')
-        .text()
-        .trim()
-        .replace(/\s/g, ' ');
+      const link = `https://www.dedicatedbrand.com${$(element)
+        .find('.productList-link')
+        .attr('href')}`;
 
-      const link = $(element)
-        .find('h2.productList-link')
-        .attr('href');
-
-      const image = $(element)
-      .find('.productList-image img')
-      .attr('data-src');
-
-      const price = parseInt(
-        $(element)
-          .find('.productList-price')
+        const price = parseInt(
+          $(element)
+            .find('.productList-price')
+            .text());
+        const name = $(element)
+          .find('.productList-title')
           .text()
-      );
-
-      return {name, price, link, image, brand};
+          .trim()
+          .replace(/\s/g, ' ');
+        const photo = $(element)
+          .find('img')
+          .attr('data-src');
+          
+        const _id = uuidv5(link, uuidv5.URL)
+      return{name,price,link,photo,_id,brand};
     })
     .get();
 };
@@ -42,7 +42,7 @@ const parse = data => {
  * @param  {[type]}  url
  * @return {Array|null}
  */
- module.exports.scrape = async url => {
+module.exports.scrape = async url => {
   try {
     const response = await fetch(url);
 
@@ -60,4 +60,6 @@ const parse = data => {
     return null;
   }
 };
+
+
 
