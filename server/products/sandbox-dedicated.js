@@ -1,7 +1,8 @@
 /* eslint-disable no-console, no-process-exit */
 const dedicatedbrand = require('../sources/dedicatedbrand');
-let results = []
+
 async function sandbox() {
+  let results = []
   try {
 
     let allpages=[];
@@ -18,9 +19,8 @@ async function sandbox() {
       return allpages ;
     }
     else {
-    console.log(dedicatedbrandProducts);
-    console.log(dedicatedbrandProducts.length);
-    console.log('done');
+    //console.log(dedicatedbrandProducts);
+    //console.log(dedicatedbrandProducts.length);
     dedicatedbrandProducts.forEach(product => allpages.push(product));
     }
 
@@ -32,7 +32,5 @@ async function sandbox() {
 }
 
 const [,, eshop] = process.argv;
-
-//sandbox(eshop);
-module.exports = sandbox(eshop);
+module.exports.products = sandbox();
 

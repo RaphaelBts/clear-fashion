@@ -26,7 +26,7 @@ const parse = data => {
           .text()
       );
 
-      return {name, price, link};
+      return {name, price, link, brand};
     })
     .get();
 };

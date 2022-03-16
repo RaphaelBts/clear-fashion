@@ -8,7 +8,7 @@ async function sandbox (eshop = 'https://adresse.paris/630-toute-la-collection?i
 
     const adresseparisProducts = await adresseparisbrand.scrape(eshop);
 
-    console.log(adresseparisProducts);
+    //console.log(adresseparisProducts);
     console.log(adresseparisProducts.length)
     console.log('done');
     adresseparisProducts.forEach(product => results.push(product));
@@ -20,6 +20,4 @@ async function sandbox (eshop = 'https://adresse.paris/630-toute-la-collection?i
 }
 
 const [,, eshop] = process.argv;
-
-//sandbox(eshop);
-module.exports = sandbox(eshop);
+module.exports.products = sandbox(eshop);
