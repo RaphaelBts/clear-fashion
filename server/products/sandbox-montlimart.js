@@ -23,4 +23,5 @@ let results = []
 }
 
 const [,, eshop] = process.argv;
+
 module.exports.products = sandbox(eshop) ;
