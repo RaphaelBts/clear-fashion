@@ -17,7 +17,9 @@ app.options('*', cors());
 app.get('/', (request, response) => {
   response.send({'ack': true});
 });
-
+app.get('/exit', function (req,res) {
+  app.listen(PORT).close();
+});
 app.listen(PORT);
 
 console.log(`📡 Running on port ${PORT}`);
