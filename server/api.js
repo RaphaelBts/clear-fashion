@@ -12,13 +12,7 @@ const helmet = require('helmet');
  const MONGO_DB_NAME = 'clear-fashion';
  const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
 
- client.connect((error, client) => {
-  if(error) {
-      throw error;
-  }
-  database = client.db(MONGO_DB_NAME);
-  collection = database.collection("products");
-  console.log("Connected to `" + MONGO_DB_NAME + "`!")});
+ 
 
 
 const PORT = 8092;
@@ -32,10 +26,16 @@ app.use(cors());
 app.use(helmet());
 
 app.options('*', cors());
+var database, collection ;
 
 app.get('/', (request, response) => {
   response.send({'ack': true});
+  client = await clientPromise
+  database = client.db(MONGO_DB_NAME);
+  collection = database.collection("products");
+  console.log("Connected to `" + MONGO_DB_NAME + "`!")
 });
+
 // get one product
 app.get('/products/search', (req,res) => {
   const size = parseInt(req.query.limit) || 12;
