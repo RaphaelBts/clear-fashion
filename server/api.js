@@ -79,11 +79,11 @@ app.get('/products/brand/:brand', (req,res) => { // search products from specifi
 // });
 app.get('/products/search', (req,res) => { // search products from specific brand and price <=priced specified
 
-  const brand = req.query.brand;
- const price = req.query.price;
+  const brand = req.query.brand ; 
+  //const price = req.query.price;
   // let limit = req.query.limit;
 
-  collection.find({ 'brand': brand }, { 'price': { $lte: price } }).toArray()
+  collection.find({ 'brand': brand }).toArray()
       .then(results =>{res.send(results)
         console.log(results)})
       .catch(err => {

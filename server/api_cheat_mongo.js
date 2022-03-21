@@ -29,15 +29,22 @@ app.get('/products/search', async function (req, res) {
   if (params.hasOwnProperty("limit")) {
     limit = params.limit;
     delete params.limit;
+    
+  }
+  if (params.hasOwnProperty("size")) {
+    size = parseInt(params.size);
+    delete params.size;
+  }
+  if (params.hasOwnProperty("page")) {
+    page = parseInt(params.page);
+    delete params.page;
   }
 
   var data = {
       "collection": "products",
       "database": "clear-fashion",
       "dataSource": "Cluster0",
-      "filter": {
-        "brand": "dedicated"
-      },
+      "filter": params,
   };
 
   if (limit!=null) {
@@ -49,8 +56,8 @@ app.get('/products/search', async function (req, res) {
   console.log(data);
 
   var config = {
-      method: 'get',
-      url: 'https://data.mongodb-api.com/app/data-acmwk/endpoint/data/beta/action/find',
+      method: 'post',
+      url: 'https://data.mongodb-api.com/app/data-hlzmy/endpoint/data/beta/action/find',
       headers: {
           'Content-Type': 'application/json',
           'Access-Control-Request-Headers': '*',
@@ -59,18 +66,18 @@ app.get('/products/search', async function (req, res) {
       data : data
   };
 
-  let gotten;
+  let response;
 
   await axios(config)
-      .then(function (response) {
-          gotten = JSON.stringify(response.data);
+      .then(function (req) {
+          response = JSON.stringify(req.data);
       })
       .catch(function (error) {
           console.log(error);
-          gotten = error;
+          response = error;
       });
 
-  res.send(gotten);
+  res.send(response);
 });
 app.get('/exit', function (req,res) {
   app.listen(PORT).close();
