@@ -37,8 +37,8 @@ const parse = data => {
         const month = ('0'+(datef.getUTCMonth() + Math.floor(Math.random() * 1))).slice(-2);
         const day = ('0'+ (datef.getUTCDate() + Math.floor(Math.random() * 7))).slice(-2);
 
-      const date = [year, month, day].join('-');
-      return{name,price,link,photo,_id,brand,date};
+      const released = [year, month, day].join('-');
+      return{name,price,link,photo,_id,brand,released};
     })
     .get();
 };

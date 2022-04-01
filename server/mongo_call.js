@@ -74,7 +74,7 @@ async function SortedByPrice(){
   console.log(products);
 } 
 
-// RemovedAllitems().catch(console.dir);
+ //RemovedAllitems().catch(console.dir);
 
 insertProd(dedicated).catch(console.dir);
 insertProd(adresseparis).catch(console.dir);
