@@ -61,7 +61,7 @@ app.get('/products/search', async(req,res) => {
      filters["price"] = {$lte: price};
    }
 
-  const size = parseInt(req.query.limit) || 12;
+  const size = parseInt(req.query.size) || 12;
   const page = parseInt(req.query.page) || 1;
 
   const totalCount =  await collection.count();
