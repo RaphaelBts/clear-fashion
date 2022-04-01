@@ -42,13 +42,19 @@ app.get('/', async (request, response) => {
 
 // get one product
 app.get('/products/search', async(req,res) => {
+
+  client = await clientPromise
+  database = client.db(MONGO_DB_NAME);
+  collection = database.collection("products");
+
   var filters={};
+
+
   const size = parseInt(req.query.limit) || 12;
   const brand = req.query.brand || '{$in:["dedicated","addresseParis","montlimart"]}';
   const price = parseInt(req.query.price) || -1;
   const page = parseInt(req.query.page) || 1;
-  const currentPage = page 
-  const pageSize = size 
+
   const totalCount =  await collection.count();
   const countPages = totalCount /size 
   // currentpage = page
@@ -57,13 +63,16 @@ app.get('/products/search', async(req,res) => {
   //CountPages 
 
  await collection.find({ 'brand': brand }, { 'price': { $lte: price } }).skip(page > 0 ? ( ( page - 1 ) * size) : 0).limit(size).toArray()
-      .then(results => res.send({'data':{"result":res,"meta":{page,totalCount,res,size}},"success":true}))
+      .then(results => res.send({'data':{"result":results,"meta":paginate(page,totalCount,results,size)},"success":true}))
       .catch(err => {
           console.log(err)
           throw err
       })
 });
 app.get('/products/:id', async (req,res) => {  // Error: Failure when receiving data from the peer
+  client = await clientPromise
+  database = client.db(MONGO_DB_NAME);
+  collection = database.collection("products");
   try {
       const results = await collection.find({'_id': new ObjectId(req.params.id)}).toArray()
       res.send(results)
@@ -74,6 +83,10 @@ app.get('/products/:id', async (req,res) => {  // Error: Failure when receiving 
 });
 // get all the products 
 app.get('/products', async (req,res) => {
+  client = await clientPromise
+  database = client.db(MONGO_DB_NAME);
+  collection = database.collection("products");
+
   collection.find({}).toArray()
       .then(results => res.status(200).json(results))
       .catch(err => {
@@ -82,6 +95,9 @@ app.get('/products', async (req,res) => {
       })
 });
 app.get('/products/brand/:brand', async (req,res) => { // search products from specific brand http://localhost:8092/products/brand/dedicated
+  client = await clientPromise
+  database = client.db(MONGO_DB_NAME);
+  collection = database.collection("products");
 
   collection.find({ 'brand': req.params.brand } ).toArray()
       .then(results => {res.send(results)
