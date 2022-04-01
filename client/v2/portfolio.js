@@ -209,15 +209,15 @@ const renderProducts = products => {
         button.innerHTML = "Removed from favorite Products";
       } 
       else {
-        button.innerHTML = "Add to favorite Products";
+        button.innerHTML = "Add fav";
       }
       button.addEventListener('click', async (event) => {
         if (favoriteProducts.find( fav => fav.name==button.value )) {  
           favoriteProducts.splice(favoriteProducts.indexOf(product),1);
-          button.innerHTML = "Add to favorite Products";
+          button.innerHTML = "Add fav";
         } else {
           favoriteProducts.push(product);
-          button.innerHTML = "Removed from favorite Products"; // maybe change
+          button.innerHTML = "Removed Fav"; // maybe change
         };
         }
       );
