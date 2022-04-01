@@ -206,7 +206,7 @@ const renderProducts = products => {
       button.setAttribute("value",product.name);
       button.setAttribute("type","button");
       if (favoriteProducts.find( fav => fav.name==button.value )) {  
-        button.innerHTML = "Removed from favorite Products";
+        button.innerHTML = "Remove fav";
       } 
       else {
         button.innerHTML = "Add fav";
@@ -217,7 +217,7 @@ const renderProducts = products => {
           button.innerHTML = "Add fav";
         } else {
           favoriteProducts.push(product);
-          button.innerHTML = "Removed Fav"; // maybe change
+          button.innerHTML = "Removed fav"; // maybe change
         };
         }
       );
