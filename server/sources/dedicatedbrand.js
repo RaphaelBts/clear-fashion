@@ -32,7 +32,13 @@ const parse = data => {
           .attr('data-src');
           
         const _id = uuidv5(link, uuidv5.URL)
-      return{name,price,link,photo,_id,brand};
+        const datef = new Date();
+        const year = datef.getUTCFullYear();
+        const month = ('0'+(datef.getUTCMonth() + Math.floor(Math.random() * 1))).slice(-2);
+        const day = ('0'+ (datef.getUTCDate() + Math.floor(Math.random() * 7))).slice(-2);
+
+      const date = [year, month, day].join('-');
+      return{name,price,link,photo,_id,brand,date};
     })
     .get();
 };

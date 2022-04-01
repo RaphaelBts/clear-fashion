@@ -61,7 +61,7 @@ const setCurrentBrands = (brands) => {
 
 const fetchProducts = async (page = 1, size = 12, brand = 'All', date = 'All', price='All', toSort='none', favorites='None') => {
   if (favorites==='fav') {
-    return fetchfavProducts(page, size , brand , date, toSort)
+    return fetchfavProducts(page, size , brand , date, price, toSort)
   }
   else if (date==='recent') {
     return fetchRecentProducts(page, size, brand, price, toSort);
@@ -99,7 +99,7 @@ const reasonableProducts = (products) => {
   return products.filter((product) => product.price < 50);
 }
 const favProducts = (products) => {
-  return products.filter((product) => favoriteProducts.find( fav => fav.uuid==product.uuid ));
+  return products.filter((product) => favoriteProducts.find( fav => fav.name==product.name ));
 }
 
 const recentProducts = (products) => {
@@ -139,12 +139,16 @@ const fetchRecentProducts = async (page = 1, size = 12, brand = 'All', price='Al
   return fetched;
 }
 
-const fetchfavProducts = async (page = 1, size = 12, brand = 'All', date='All', toSort='none') => {
+const fetchfavProducts = async (page = 1, size = 12, brand = 'All', date='All',price="All" ,toSort='none') => {
   let fetched;
+  if (price === 'reasonable') {
+    fetched = await fetchReasonableProducts(1, currentPagination.count, brand, 'All', toSort);
+  }
   if (date === 'recent') {
     fetched = await fetchRecentProducts(1, currentPagination.count, brand, 'All', toSort);
-  } else {
-    fetched = await fetchProducts(1, currentPagination.count, brand, date, 'All', toSort);
+  } 
+  else {
+    fetched = await fetchProducts(1, currentPagination.count, brand, date, price , toSort);
   }
   fetched.result = favProducts(fetched.result)
   const totalOfReasonable = fetched.result.length;
@@ -189,7 +193,7 @@ const renderProducts = products => {
       const divprodbutton = document.createElement('div');
       const childtemplate = `
       <div class="product>
-      <div  id=${product.uuid}>
+      <div  id=${product.name}>
         <span class="product_span">${product.brand}</span>
         <a target="_blank" href="${product.link}" >${product.name}</a>
         
@@ -198,17 +202,17 @@ const renderProducts = products => {
       </div>`;
       divprodbutton.innerHTML = childtemplate;
       const button = document.createElement('button');
-      button.id = product.uuid+"_button";
-      button.setAttribute("value",product.uuid);
+      button.id = product.name+"_button";
+      button.setAttribute("value",product.uu);
       button.setAttribute("type","button");
-      if (favoriteProducts.find( fav => fav.uuid==button.value )) {  
+      if (favoriteProducts.find( fav => fav.name==button.value )) {  
         button.innerHTML = "Removed from favorite Products";
       } 
       else {
         button.innerHTML = "Add to favorite Products";
       }
       button.addEventListener('click', async (event) => {
-        if (favoriteProducts.find( fav => fav.uuid==button.value )) {  
+        if (favoriteProducts.find( fav => fav.name==button.value )) {  
           favoriteProducts.splice(favoriteProducts.indexOf(product),1);
           button.innerHTML = "Add to favorite Products";
         } else {
@@ -311,7 +315,9 @@ inputRecent.addEventListener('change', async (event) => {
       .then(() => render(currentProducts, currentPagination));
   } else {
     currentRecent = 'All';
-    fetchProducts(selectPage.value, selectShow.value, selectBrand.value, currentRecent, currentReasonablePrice, selectSort.value,favorites)
+    let pagereseted = selectPage.value;
+    if (selectPage.value == "") { pagereseted=1; };
+    fetchProducts(pagereseted, selectShow.value, selectBrand.value, currentRecent, currentReasonablePrice, selectSort.value,favorites)
       .then(setCurrentProducts)
       .then(() => render(currentProducts, currentPagination));
   }
@@ -325,7 +331,9 @@ inputReasonablePrice.addEventListener('change', async (event) => {
       .then(() => render(currentProducts, currentPagination));
   } else {
     currentReasonablePrice = 'All';
-    fetchProducts(selectPage.value, selectShow.value, selectBrand.value, currentRecent, currentReasonablePrice, selectSort.value,favorites)
+    let pagereseted = selectPage.value;
+    if (selectPage.value == "") { pagereseted=1; };
+    fetchProducts(pagereseted, selectShow.value, selectBrand.value, currentRecent, currentReasonablePrice, selectSort.value,favorites)
       .then(setCurrentProducts)
       .then(() => render(currentProducts, currentPagination));
   }
@@ -344,7 +352,9 @@ inputFavorite.addEventListener('change', async (event) => {
       .then(() => render(currentProducts, currentPagination));
   } else {
     favorites= 'None';
-    fetchProducts(selectPage.value, selectShow.value, selectBrand.value, currentRecent, currentReasonablePrice, selectSort.value,favorites)
+    let pagereseted = selectPage.value;
+    if (selectPage.value == "") { pagereseted=1; };
+    fetchProducts(pagereseted, selectShow.value, selectBrand.value, currentRecent, currentReasonablePrice, selectSort.value,favorites)
       .then(setCurrentProducts)
       .then(() => render(currentProducts, currentPagination));
   }

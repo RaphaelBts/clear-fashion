@@ -6,7 +6,7 @@ const cheerio = require('cheerio');
  * @param  {String} data - html response
  * @return {Array} products
  */
-const brand = 'addresseParis'
+const brand = 'adresse-paris'
 const parse = data => {
   const $ = cheerio.load(data);
 
@@ -25,8 +25,14 @@ const parse = data => {
           .find('.price.product-price')       
           .text()
       );
+      const datef = new Date();
+      const year = datef.getUTCFullYear();
+      const month = ('0'+(datef.getUTCMonth() + Math.floor(Math.random() * 1))).slice(-2);
+      const day = ('0'+ (datef.getUTCDate() + Math.floor(Math.random() * 7))).slice(-2);
 
-      return {name, price, link, brand};
+      const date = [year, month, day].join('-');
+
+      return {name, price, link, brand, date};
     })
     .get();
 };

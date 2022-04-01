@@ -17,13 +17,39 @@ async function insertProd(brandsite) {
   try {
     await client.connect();
     const collection = client.db(MONGO_DB_NAME).collection('products');
+
+   
+  
     const result = await collection.insertMany(products);
 
-    console.log(`Items from ${Object.keys(brandsite)[0]} added to the ${MONGO_DB_NAME} collection : ${result.insertedIds}`);
+    console.log(`Items from ${Object.keys(brandsite)[0]} added to the ${MONGO_DB_NAME} collection :${result.insertedIds}`); 
   } finally {
     await client.close();
   }
 }
+async function InsertWithoutDoublon(brandsite){
+
+  const products = await brandsite.products;
+  
+  try {
+    await client.connect();
+    const collection = client.db(MONGO_DB_NAME).collection('products');
+    for (let i = 0; i < products.length; i++) {
+      console.log(products[i]);
+      collection.findOne({name: products[i].name}) //products[i].title 
+      .then(results => { //update products with results
+          if (!results) {
+          collection.insertMany(products[i]);
+          } 
+      }); 
+      console.log(`Items from ${Object.keys(brandsite)[0]} added to the ${MONGO_DB_NAME} collection :`); // ${result.insertedIds}
+    }
+  } finally {
+      await client.close();
+    }
+  }
+
+
 
 async function RemovedAllitems() {
   try {
@@ -49,9 +75,13 @@ async function SortedByPrice(){
 } 
 
 RemovedAllitems().catch(console.dir);
+
+insertProd(dedicated).catch(console.dir);
 insertProd(adresseparis).catch(console.dir);
 insertProd(montlimart).catch(console.dir);
-insertProd(dedicated).catch(console.dir);
 
+// InsertWithoutDoublon(adresseparis).catch(console.dir);
+// InsertWithoutDoublon(montlimart).catch(console.dir);
+// InsertWithoutDoublon(dedicated).catch(console.dir);
 
 

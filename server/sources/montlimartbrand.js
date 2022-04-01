@@ -29,8 +29,15 @@ const parse = data => {
           .find('span.price')
           .text()); // Rajouter d'autres bails genre materiaux + images + date de scraping. 
        // return montlimart pour associer les items ? 
+      const datef = new Date();
+      const year = datef.getUTCFullYear();
+      const month = ('0'+(datef.getUTCMonth() + Math.floor(Math.random() * 1))).slice(-2);
+      const day = ('0'+ (datef.getUTCDate() + Math.floor(Math.random() * 7))).slice(-2);
 
-      return {name, price, link, brand};
+      const date = [year, month, day].join('-');
+      
+
+      return {name, price, link, brand, date};
     })
     .get();
 };

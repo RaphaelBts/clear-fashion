@@ -11,7 +11,7 @@ let results = []
 
     //console.log(montlimartProducts);
     console.log(montlimartProducts.length);
-    console.log('done');
+    console.log('montlimart done');
 
     montlimartProducts.forEach(product => results.push(product));
     return results 
