@@ -47,23 +47,29 @@ app.get('/products/search', async(req,res) => {
   database = client.db(MONGO_DB_NAME);
   collection = database.collection("products");
 
-  var filters={};
+   const filters={};
 
+   var brand, price;
+
+ 
+   if(req.query.brand !== undefined){
+     brand = req.query.brand,
+     filters["brand"] = brand;
+   }
+   if(req.query.price !== undefined){
+     price = parseInt(req.query.price);
+     filters["price"] = {$lte: price};
+   }
 
   const size = parseInt(req.query.limit) || 12;
-  const brand = req.query.brand || '{$in:["dedicated","addresseParis","montlimart"]}';
-  const price = parseInt(req.query.price) || -1;
   const page = parseInt(req.query.page) || 1;
 
   const totalCount =  await collection.count();
   const countPages = totalCount /size 
-  // currentpage = page
-  // count (all items)
-  //count (items par page)
-  //CountPages 
 
- await collection.find({ 'brand': brand }, { 'price': { $lte: price } }).skip(page > 0 ? ( ( page - 1 ) * size) : 0).limit(size).toArray()
-      .then(results => res.send({'data':{"result":results,"meta":paginate(page,totalCount,results,size)},"success":true}))
+
+      collection.find(filters).skip(page > 0 ? ( ( page - 1 ) * size) : 0).limit(size).toArray()
+      .then(results => res.send({"data":{"result":results,"meta":paginate(page,totalCount,results,size)},"success":true}))
       .catch(err => {
           console.log(err)
           throw err
