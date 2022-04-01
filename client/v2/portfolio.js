@@ -72,9 +72,9 @@ const fetchProducts = async (page = 1, size = 12, brand = 'All', date = 'All', p
     page=1;
   }
   try {
-    let fetchUrl = `https://clear-fashion-api.vercel.app?page=${page}&size=${size}`;
+    let fetchUrl = `https://clear-fashion-vf.vercel.app/products/search?page=${page}&size=${size}`;
     if (brand!='All'){
-      fetchUrl = `https://clear-fashion-api.vercel.app?page=${page}&size=${size}&brand=${brand}`;
+      fetchUrl = `https://clear-fashion-vf.vercel.app/products/search?page=${page}&size=${size}&brand=${brand}`;
     }
     const response = await fetch(fetchUrl);
     const body = await response.json();
