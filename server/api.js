@@ -1,6 +1,10 @@
 const cors = require('cors');
 const express = require('express');
 const helmet = require('helmet');
+const clientPromise = require('./mongodb-client');
+const { calculateLimitAndOffset, paginate } = require('paginate-info');
+
+
 
 /**
  * Import MongoClient & connexion à la DB
@@ -10,7 +14,6 @@ const helmet = require('helmet');
  
  const uri = "mongodb+srv://user:Lp3daFeXnT89XFU6@cluster0.dxsim.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
  const MONGO_DB_NAME = 'clear-fashion';
- const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
 
  
 
@@ -19,40 +22,42 @@ const PORT = 8092;
 
 const app = express();
 
-module.exports = app;
 
 app.use(require('body-parser').json());
 app.use(cors());
 app.use(helmet());
 
 app.options('*', cors());
-var database, collection ;
 
-app.get('/', (request, response) => {
-  response.send({'ack': true});
+var database, collection ; 
+
+
+app.get('/', async (request, response) => {
   client = await clientPromise
   database = client.db(MONGO_DB_NAME);
   collection = database.collection("products");
   console.log("Connected to `" + MONGO_DB_NAME + "`!")
+  response.send({'ack': true});
 });
 
 // get one product
-app.get('/products/search', (req,res) => {
+app.get('/products/search', async(req,res) => {
+  var filters={};
   const size = parseInt(req.query.limit) || 12;
-  const brand = req.query.brand || '';
+  const brand = req.query.brand || '{$in:["dedicated","addresseParis","montlimart"]}';
   const price = parseInt(req.query.price) || -1;
-  const page = parseInt(req.query.page)
+  const page = parseInt(req.query.page) || 1;
   const currentPage = page 
   const pageSize = size 
-  const totalCount =  collection.countDocuments()
+  const totalCount =  await collection.count();
   const countPages = totalCount /size 
   // currentpage = page
   // count (all items)
   //count (items par page)
   //CountPages 
 
-  collection.find({ 'brand': brand }, { 'price': { $lte: price } }).skip(page > 0 ? ( ( page - 1 ) * size) : 0).limit(size).toArray()
-      .then(results => res.status(200).json({"results":res,"meta":paginate(page,totalCount,size,)}))
+ await collection.find({ 'brand': brand }, { 'price': { $lte: price } }).skip(page > 0 ? ( ( page - 1 ) * size) : 0).limit(size).toArray()
+      .then(results => res.send({'data':{"result":res,"meta":{page,totalCount,res,size}},"success":true}))
       .catch(err => {
           console.log(err)
           throw err
@@ -68,7 +73,7 @@ app.get('/products/:id', async (req,res) => {  // Error: Failure when receiving 
   }
 });
 // get all the products 
-app.get('/products', (req,res) => {
+app.get('/products', async (req,res) => {
   collection.find({}).toArray()
       .then(results => res.status(200).json(results))
       .catch(err => {
@@ -76,7 +81,7 @@ app.get('/products', (req,res) => {
           throw err
       })
 });
-app.get('/products/brand/:brand', (req,res) => { // search products from specific brand http://localhost:8092/products/brand/dedicated
+app.get('/products/brand/:brand', async (req,res) => { // search products from specific brand http://localhost:8092/products/brand/dedicated
 
   collection.find({ 'brand': req.params.brand } ).toArray()
       .then(results => {res.send(results)
@@ -122,3 +127,4 @@ app.get('/exit', function (req,res) {
 });
 app.listen(PORT, ()=> {
   console.log(`📡 Running on port ${PORT}`)});
+module.exports = app;
