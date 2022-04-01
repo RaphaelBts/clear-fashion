@@ -26,12 +26,19 @@ const parse = data => {
           .text()
       );
       const datef = new Date();
-      const year = datef.getUTCFullYear();
+            // I had to create date because i didn't implement those tools before therefore i would have got the same date for all products and wouldn't be able to show my features on client.
+        // const month = ('0'+(datef.getUTCMonth() + Math.floor(Math.random() * 1))).slice(-2);
+        // const day = ('0'+ (datef.getUTCDate() + Math.floor(Math.random() * 7))).slice(-2);
+      const year = datef.getUTCFullYear(); 
+      // const month = ('0'+(datef.getUTCMonth() + 1 )).slice(-2);
+      // const day = ('0'+ (datef.getUTCDate())).slice(-2);
       const month = ('0'+(datef.getUTCMonth() + Math.floor(Math.random() * 1))).slice(-2);
       const day = ('0'+ (datef.getUTCDate() + Math.floor(Math.random() * 7))).slice(-2);
-
       const released = [year, month, day].join('-');
+      
 
+      if (name ==="" || name === undefined ) 
+          return ; 
       return {name, price, link, brand, released};
     })
     .get();

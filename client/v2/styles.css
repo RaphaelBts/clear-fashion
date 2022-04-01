@@ -1,0 +1,44 @@
+html{
+    font-family: Helvetica, sans-serif;
+}
+
+
+h1 {
+    position: relative;
+    text-align: center;
+    width: 100%;
+    font-size: 400%;
+}
+
+h2 {
+    position: relative;
+    text-align: center;
+    width: 100%;
+    font-size: 250%;
+}
+section {
+    position: relative;
+    background-color: rgb(170, 227, 241);
+    margin-left : auto;
+    margin-right: auto;
+    padding : 10px ; 
+
+}
+.grid-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 10px;
+    max-width: 1000px;
+    width : calc(100%-30px);
+    margin-left : auto;
+    margin-right: auto;
+  }
+
+ .container {
+    margin-top : 30px ; 
+    text-align: center;
+    max-width: 100px;
+    width : calc(100%-6660px);
+    margin-left : auto;
+    margin-right: auto;
+ }

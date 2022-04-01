@@ -24,7 +24,7 @@ const spanNbNewProducts = document.querySelector('#nbNewProducts');
 const spanp50 = document.querySelector('#p50');
 const spanp90 = document.querySelector('#p90');
 const spanp95 = document.querySelector('#p95');
-//const spanLastRelease = document.querySelector("#last-release");
+const spanLastreleased = document.querySelector("#last-released");
 
 //filter 
 const inputRecent = document.querySelector('#recent-filter');
@@ -203,7 +203,7 @@ const renderProducts = products => {
       divprodbutton.innerHTML = childtemplate;
       const button = document.createElement('button');
       button.id = product.name+"_button";
-      button.setAttribute("value",product.uu);
+      button.setAttribute("value",product.name);
       button.setAttribute("type","button");
       if (favoriteProducts.find( fav => fav.name==button.value )) {  
         button.innerHTML = "Removed from favorite Products";
@@ -257,6 +257,7 @@ const renderIndicators = pagination => {
   spanp50.innerHTML = currentProducts.sort((b, a) => b.price - a.price)[Math.floor(currentProducts.length * 0.5)].price;
   spanp90.innerHTML = currentProducts.sort((b, a) => b.price - a.price)[Math.floor(currentProducts.length * 0.9)].price;
   spanp95.innerHTML = currentProducts.sort((b, a) => b.price - a.price)[Math.floor(currentProducts.length * 0.95)].price;
+  spanLastreleased.innerHTML = currentProducts.sort((b,a) => {return new Date(a.released).getTime() - new Date(b.released).getTime()})[0].released;
 };
 
 /**
@@ -302,7 +303,9 @@ selectPage.addEventListener('change', async (event) => {
 });
 
 selectBrand.addEventListener('change', async (event) => {
-  fetchProducts(selectPage.value, selectShow.value, event.target.value, currentRecent, currentReasonablePrice, selectSort.value, favorites)
+  let pagereseted = selectPage.value;
+  if (selectPage.value == "") { pagereseted=1; };
+  fetchProducts(pagereseted, selectShow.value, event.target.value, currentRecent, currentReasonablePrice, selectSort.value, favorites)
     .then(setCurrentProducts)
     .then(() => render(currentProducts, currentPagination));
 });
