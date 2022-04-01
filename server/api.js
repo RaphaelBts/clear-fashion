@@ -64,7 +64,7 @@ app.get('/products/search', async(req,res) => {
   const size = parseInt(req.query.size) || 12;
   const page = parseInt(req.query.page) || 1;
 
-  const totalCount =  (collection.find(filters).skip(page > 0 ? ( ( page - 1 ) * size) : 0).limit(size).toArray()).count();
+  const totalCount =  (collection.find(filters).skip(page > 0 ? ( ( page - 1 ) * size) : 0).limit(size)).count();
   const countPages = totalCount /size 
 
 
